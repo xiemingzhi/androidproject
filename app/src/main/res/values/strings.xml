@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">AndroidProject</string>
     <string name="AddItem">Add</string>
+    <string name="connection_error">connection error</string>
+    <string name="doodle_found">doodle found</string>
+    <string name="no_doodle">no doodle</string>
+    <string name="doodle_alert">there is some doodle</string>
 </resources>

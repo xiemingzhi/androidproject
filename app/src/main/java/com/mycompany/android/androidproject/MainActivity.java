@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         addListenerOnButton();
         setSSLContext();
+        SampleAlarmReceiver alarm = new SampleAlarmReceiver();
+        alarm.setAlarm(this);
     }
 
     public void addListenerOnButton() {

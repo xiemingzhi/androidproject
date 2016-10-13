@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -20,6 +21,15 @@
             </intent-filter>
         </activity>
         <activity android:name="com.mycompany.android.ContactsListActivity"></activity>
+        <receiver android:name=".SampleAlarmReceiver"></receiver>
+
+        <receiver android:name=".SampleBootReceiver"
+                  android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
+        <service android:name=".SampleSchedulingService" />
     </application>
 
 </manifest>
