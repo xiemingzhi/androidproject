@@ -23,6 +23,21 @@
         android:layout_below="@+id/textView"
         android:onClick="makeRequest" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/buttonRequest" />
+
+    <Button
+        android:text="Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonPost"
+        android:layout_below="@+id/textView2"
+        android:onClick="makePost" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

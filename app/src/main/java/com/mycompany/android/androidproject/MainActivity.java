@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -83,40 +84,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void makePost(View view) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.111.1:8080/userman/fileupload",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String s) {
-                        //Showing toast message of the response
-                        Toast.makeText(MainActivity.this, s , Toast.LENGTH_LONG).show();
-                        textView2.setText(s);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        //Showing toast
-                        Toast.makeText(MainActivity.this, volleyError.getMessage().toString(), Toast.LENGTH_LONG).show();
-                    }
-                }){
+        VolleyMultipartRequest multipartRequest = new VolleyMultipartRequest(Request.Method.POST, "http://192.168.111.1:8080/userman/fileupload", new Response.Listener<NetworkResponse>() {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.mobile);
-
-                //Converting Bitmap to String
-                String image = getStringImage(bitmap);
-
+            public void onResponse(NetworkResponse response) {
+                String resultResponse = new String(response.data);
+                // parse success output
+                textView2.setText(resultResponse);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
                 //Getting Image Name
                 String name = "mobile.jpg";
-
-                //Creating parameters
-                Map<String,String> params = new Hashtable<String, String>();
-
-                //Adding parameters
-                params.put("file", image);
                 params.put("name", name);
+                return params;
+            }
 
-                //returning parameters
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                // file name could found file base or direct access from real path
+                // for now just get bitmap data from ImageView
+                params.put("file", new DataPart("mobile.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), R.drawable.mobile), "image/jpeg"));
                 return params;
             }
 
@@ -134,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
         //Adding request to the queue
-        requestQueue.add(stringRequest);
+        requestQueue.add(multipartRequest);
     }
 
     public void makeRequest(View view) {
