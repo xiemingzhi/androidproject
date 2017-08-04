@@ -4,11 +4,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.mycompany.android.ContactsListActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
@@ -22,13 +37,19 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
     private static SSLContext sslcontext;
     Button button;
+    Button buttonRequest;
+    TextView textView;
+    RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +57,51 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         addListenerOnButton();
         setSSLContext();
+        // Instantiate the RequestQueue.
+        queue = Volley.newRequestQueue(this);
+        buttonRequest = (Button) findViewById(R.id.buttonRequest);
+        textView = (TextView) findViewById(R.id.textView);
+    }
+
+    public void makeRequest(View view) {
+        Log.d(TAG, "inside makerequest");
+        JsonArrayRequest request = new JsonArrayRequest("http://192.168.111.1:8080/userman/services/api/users?_type=json", new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d(TAG, response.toString());
+                StringBuilder sb = new StringBuilder();
+                try {
+                    //read your json here
+                    if (response.length() > 0) {
+                        for (int i = 0; i < response.length(); i++) {
+                            JSONObject jsonObject = response.getJSONObject(i);
+                            sb.append(jsonObject.getString("username")+";");
+                        }
+                    }
+                } catch (JSONException jsone) {
+                    jsone.printStackTrace();
+                } catch (Exception e) {
+                    // log and show error message with error code;
+                    e.printStackTrace();
+                }
+                textView.setText(sb.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // log and show error message with error code;
+                error.printStackTrace();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                String encodedCredentials = Base64.encodeToString("admin:password".getBytes(), Base64.NO_WRAP);
+                headers.put("Authorization", "Basic " + encodedCredentials);
+                return headers;
+            }
+        };
+        queue.add(request);
     }
 
     public void addListenerOnButton() {
