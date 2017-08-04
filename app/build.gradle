@@ -45,4 +45,5 @@ dependencies {
         exclude group: 'stax', module: 'stax-api'
         exclude group: 'xpp3', module: 'xpp3'
     }
+    compile 'com.android.volley:volley:1.0.0'
 }
