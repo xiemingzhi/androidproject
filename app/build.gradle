@@ -30,7 +30,7 @@ android {
 
 repositories {
     mavenCentral()
-    maven { url 'http://repo.spring.io/libs-release' }
+    maven { url 'https://repo.spring.io/libs-release' }
     maven { url 'https://android-rome-feed-reader.googlecode.com/svn/maven2/releases' }
 }
 
