@@ -5,7 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * returned from server
- * {"contactList":[{"contactId":"1","email":"contact1@hotmail.com","firstName":"contact1","lastName":"contact1last"},{"contactId":"2","email":"contact2@hotmail.com","firstName":"contact2","lastName":"contact2last"},{"contactId":"3","email":"contact3@hotmail.com","firstName":"contact3","lastName":"contact3last"}]}
+ * {"contactList":[{"id":"1","email":"contact1@hotmail.com","name":"contact1","username":"contact1last"},{"id":"2","email":"contact2@hotmail.com","name":"contact2","username":"contact2last"},{"id":"3","email":"contact3@hotmail.com","name":"contact3","username":"contact3last"}]}
  * @author ming
  *
  */

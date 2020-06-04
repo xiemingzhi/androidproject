@@ -19,6 +19,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.mycompany.Contacts;
+import com.mycompany.Friend;
+import com.mycompany.FriendList;
+import com.mycompany.GsonRequest;
 import com.mycompany.android.ContactsListActivity;
 
 import org.json.JSONArray;
@@ -50,13 +54,14 @@ public class MainActivity extends AppCompatActivity {
     Button buttonRequest;
     TextView textView;
     RequestQueue queue;
+    Contacts cList = new Contacts();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         addListenerOnButton();
-        setSSLContext();
+        //setSSLContext();
         // Instantiate the RequestQueue.
         queue = Volley.newRequestQueue(this);
         buttonRequest = (Button) findViewById(R.id.buttonRequest);
@@ -65,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void makeRequest(View view) {
         Log.d(TAG, "inside makerequest");
-        JsonArrayRequest request = new JsonArrayRequest("http://192.168.111.1:8080/userman/services/api/users?_type=json", new Response.Listener<JSONArray>() {
+        //JsonArrayRequest request = new JsonArrayRequest("http://192.168.111.1:8080/userman/services/api/users?_type=json", new Response.Listener<JSONArray>() {
+        /*JsonArrayRequest request = new JsonArrayRequest("https://jsonplaceholder.typicode.com/users", new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 Log.d(TAG, response.toString());
@@ -101,7 +107,39 @@ public class MainActivity extends AppCompatActivity {
                 return headers;
             }
         };
-        queue.add(request);
+        queue.add(request);*/
+        HashMap<String, String> headerMap = new HashMap<>();
+        headerMap.put("Content-Type", "application/json");
+        GsonRequest<FriendList> myReq = new GsonRequest<FriendList>(
+                "https://jsonplaceholder.typicode.com/users",
+                FriendList.class,
+                headerMap,
+                createMyReqSuccessListener(),
+                createMyReqErrorListener());
+
+        queue.add(myReq);
+    }
+
+    private Response.Listener<FriendList> createMyReqSuccessListener() {
+        return new Response.Listener<FriendList>() {
+            @Override
+            public void onResponse(FriendList response) {
+                // Do whatever you want to do with response;
+                // Like response.tags.getListing_count(); etc. etc.
+                Log.d(TAG, String.valueOf(response.size()));
+                textView.setText(String.valueOf(response.size()));
+            }
+        };
+    }
+
+    private Response.ErrorListener createMyReqErrorListener() {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Do whatever you want to do with error.getMessage();
+                Log.e("ERRORLISTENER", error.getMessage());
+            }
+        };
     }
 
     public void addListenerOnButton() {

@@ -52,7 +52,7 @@ public class ContactsAPICaller extends AsyncTask<String, Void, Contacts> {
     @Override
     protected void onPostExecute(Contacts result) {
     	for (Friend umi : result.getContactList()) {
-			Log.d("APICaller", "onpostexecute;" + umi.getFirstName());
+			//Log.d("APICaller", "onpostexecute;" + umi.getFirstName());
 		}
         mCallback.onRequestCompleted(result); 
     }

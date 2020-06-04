@@ -12,58 +12,58 @@ import org.simpleframework.xml.Root;
 @Root
 public class Friend implements Serializable{
 	@Element
-	int contactId;
+	int id;
 	//Using JSR303 bean validation
 	@Element
-	String firstName;
+	String name;
 	@Element
-	String lastName;
+	String username;
 	@Element
 	String email;
 	public Friend(){
 		
 	}
-	public Friend(int id, String firstName, String lastName, String email) {
-		contactId = id;
+	public Friend(int id, String name, String username, String email) {
+		this.id = id;
 		this.email = email;
-		this.firstName = firstName;
-		this.lastName = lastName;
+		this.name = name;
+		this.username = username;
 	}
 	/**
-	 * @return Returns the contactId.
+	 * @return Returns the id.
 	 */
-	public int getContactId() {
-		return contactId;
+	public int getId() {
+		return id;
 	}
 	/**
-	 * @param contactId The contactId to set.
+	 * @param id The id to set.
 	 */
-	public void setContactId(int contactId) {
-		this.contactId = contactId;
+	public void setId(int id) {
+		this.id = id;
 	}
 	/**
-	 * @return Returns the firstName.
+	 * @return Returns the name.
 	 */
-	public String getFirstName() {
-		return firstName;
+	public String getName() {
+		return name;
 	}
 	/**
-	 * @param firstName The firstName to set.
+	 * @param name The name to set.
 	 */
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	/**
-	 * @return Returns the lastName.
+	 * @return Returns the username.
 	 */
-	public String getLastName() {
-		return lastName;
+	public String getUsername() {
+		return username;
 	}
 	/**
-	 * @param lastName The lastName to set.
+	 * @param username The username to set.
 	 */
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	/**
 	 * @return Returns the email.
@@ -82,7 +82,7 @@ public class Friend implements Serializable{
 	 */
 	public String toString() {
 		StringBuffer contactStr = new StringBuffer();
-		contactStr.append(firstName + " " + lastName + ", " + email);
+		contactStr.append(name + " " + username + ", " + email);
 		return contactStr.toString();
 	}
 }
