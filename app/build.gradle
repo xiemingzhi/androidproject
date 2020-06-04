@@ -30,7 +30,6 @@ android {
 
 repositories {
     mavenCentral()
-    maven { url 'https://repo.spring.io/libs-release' }
     maven { url 'https://android-rome-feed-reader.googlecode.com/svn/maven2/releases' }
 }
 
@@ -38,7 +37,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.0'
-    compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.1.4'
     compile ('org.simpleframework:simple-xml:2.7') {
         exclude group: 'stax', module: 'stax'
